@@ -44,6 +44,65 @@ import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
 
+function AdminRoutes() {
+  return (
+    <AdminAuthProvider>
+      <Routes>
+        <Route path="login" element={<AdminLogin />} />
+        <Route element={<AdminRoute><AdminLayout /></AdminRoute>}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="tenants" element={<AdminTenants />} />
+          <Route path="users" element={<AdminUsers />} />
+          <Route path="settings" element={<AdminSettings />} />
+        </Route>
+      </Routes>
+    </AdminAuthProvider>
+  );
+}
+
+function CustomerRoutes() {
+  return (
+    <AuthProvider>
+      <Routes>
+        {/* Public routes */}
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+
+        {/* Onboarding */}
+        <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
+
+        {/* Protected app routes */}
+        <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/clients" element={<Clients />} />
+          <Route path="/employees" element={<Employees />} />
+          <Route path="/fixed-expenses" element={<FixedExpenses />} />
+          <Route path="/vendors" element={<Vendors />} />
+          <Route path="/contracts" element={<Contracts />} />
+          <Route path="/founders" element={<FounderDashboard />} />
+          <Route path="/quote" element={<QuoteBuilder />} />
+          <Route path="/salary-dates" element={<SalaryDates />} />
+          <Route path="/expense-report" element={<ExpenseReport />} />
+          <Route path="/monthly-billing" element={<MonthlyBilling />} />
+          <Route path="/tax" element={<TaxPortal />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/assign-tasks" element={<AssignTasks />} />
+          <Route path="/editor-dashboard" element={<EditorDashboard />} />
+          <Route path="/team-dashboard" element={<TeamDashboard />} />
+          <Route path="/team" element={<TeamManagement />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/billing" element={<BillingPage />} />
+        </Route>
+
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </AuthProvider>
+  );
+}
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -51,54 +110,8 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          {/* Admin routes (separate auth context) */}
-          <Route element={<AdminAuthProvider><Route /></AdminAuthProvider>}>
-            <Route path="/admin/login" element={<AdminAuthProvider><AdminLogin /></AdminAuthProvider>} />
-            <Route element={<AdminAuthProvider><AdminRoute><AdminLayout /></AdminRoute></AdminAuthProvider>}>
-              <Route path="/admin" element={<AdminDashboard />} />
-              <Route path="/admin/tenants" element={<AdminTenants />} />
-              <Route path="/admin/users" element={<AdminUsers />} />
-              <Route path="/admin/settings" element={<AdminSettings />} />
-            </Route>
-          </Route>
-
-          {/* Customer routes */}
-          <Route element={<AuthProvider><Route /></AuthProvider>}>
-            {/* Public routes */}
-            <Route path="/" element={<AuthProvider><Landing /></AuthProvider>} />
-            <Route path="/login" element={<AuthProvider><Login /></AuthProvider>} />
-            <Route path="/signup" element={<AuthProvider><Signup /></AuthProvider>} />
-            <Route path="/forgot-password" element={<AuthProvider><ForgotPassword /></AuthProvider>} />
-            <Route path="/reset-password" element={<AuthProvider><ResetPassword /></AuthProvider>} />
-
-            {/* Onboarding */}
-            <Route path="/onboarding" element={<AuthProvider><ProtectedRoute><Onboarding /></ProtectedRoute></AuthProvider>} />
-
-            {/* Protected app routes */}
-            <Route element={<AuthProvider><ProtectedRoute><AppLayout /></ProtectedRoute></AuthProvider>}>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/clients" element={<Clients />} />
-              <Route path="/employees" element={<Employees />} />
-              <Route path="/fixed-expenses" element={<FixedExpenses />} />
-              <Route path="/vendors" element={<Vendors />} />
-              <Route path="/contracts" element={<Contracts />} />
-              <Route path="/founders" element={<FounderDashboard />} />
-              <Route path="/quote" element={<QuoteBuilder />} />
-              <Route path="/salary-dates" element={<SalaryDates />} />
-              <Route path="/expense-report" element={<ExpenseReport />} />
-              <Route path="/monthly-billing" element={<MonthlyBilling />} />
-              <Route path="/tax" element={<TaxPortal />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/assign-tasks" element={<AssignTasks />} />
-              <Route path="/editor-dashboard" element={<EditorDashboard />} />
-              <Route path="/team-dashboard" element={<TeamDashboard />} />
-              <Route path="/team" element={<TeamManagement />} />
-              <Route path="/settings" element={<SettingsPage />} />
-              <Route path="/billing" element={<BillingPage />} />
-            </Route>
-          </Route>
-
-          <Route path="*" element={<NotFound />} />
+          <Route path="/admin/*" element={<AdminRoutes />} />
+          <Route path="/*" element={<CustomerRoutes />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
