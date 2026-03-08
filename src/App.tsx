@@ -4,8 +4,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { AdminAuthProvider, AdminRoute } from "@/contexts/AdminAuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AppLayout from "@/components/AppLayout";
+import AdminLayout from "@/components/AdminLayout";
 
 // Public pages
 import Landing from "@/pages/Landing";
@@ -14,6 +16,13 @@ import Signup from "@/pages/Signup";
 import ForgotPassword from "@/pages/ForgotPassword";
 import ResetPassword from "@/pages/ResetPassword";
 import Onboarding from "@/pages/Onboarding";
+
+// Admin pages
+import AdminLogin from "@/pages/admin/AdminLogin";
+import AdminDashboard from "@/pages/admin/AdminDashboard";
+import AdminTenants from "@/pages/admin/AdminTenants";
+import AdminUsers from "@/pages/admin/AdminUsers";
+import AdminSettings from "@/pages/admin/AdminSettings";
 
 // Protected pages
 import Dashboard from "@/pages/Dashboard";
@@ -41,20 +50,32 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <AuthProvider>
-          <Routes>
-            {/* Public routes */}
-            <Route path="/" element={<Landing />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
+        <Routes>
+          {/* Admin routes (separate auth context) */}
+          <Route element={<AdminAuthProvider><Route /></AdminAuthProvider>}>
+            <Route path="/admin/login" element={<AdminAuthProvider><AdminLogin /></AdminAuthProvider>} />
+            <Route element={<AdminAuthProvider><AdminRoute><AdminLayout /></AdminRoute></AdminAuthProvider>}>
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin/tenants" element={<AdminTenants />} />
+              <Route path="/admin/users" element={<AdminUsers />} />
+              <Route path="/admin/settings" element={<AdminSettings />} />
+            </Route>
+          </Route>
 
-            {/* Onboarding (authenticated but no layout) */}
-            <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
+          {/* Customer routes */}
+          <Route element={<AuthProvider><Route /></AuthProvider>}>
+            {/* Public routes */}
+            <Route path="/" element={<AuthProvider><Landing /></AuthProvider>} />
+            <Route path="/login" element={<AuthProvider><Login /></AuthProvider>} />
+            <Route path="/signup" element={<AuthProvider><Signup /></AuthProvider>} />
+            <Route path="/forgot-password" element={<AuthProvider><ForgotPassword /></AuthProvider>} />
+            <Route path="/reset-password" element={<AuthProvider><ResetPassword /></AuthProvider>} />
+
+            {/* Onboarding */}
+            <Route path="/onboarding" element={<AuthProvider><ProtectedRoute><Onboarding /></ProtectedRoute></AuthProvider>} />
 
             {/* Protected app routes */}
-            <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
+            <Route element={<AuthProvider><ProtectedRoute><AppLayout /></ProtectedRoute></AuthProvider>}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/clients" element={<Clients />} />
               <Route path="/employees" element={<Employees />} />
@@ -75,10 +96,10 @@ const App = () => (
               <Route path="/settings" element={<SettingsPage />} />
               <Route path="/billing" element={<BillingPage />} />
             </Route>
+          </Route>
 
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </AuthProvider>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
