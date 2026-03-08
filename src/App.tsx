@@ -6,6 +6,16 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AppLayout from "@/components/AppLayout";
+
+// Public pages
+import Landing from "@/pages/Landing";
+import Login from "@/pages/Login";
+import Signup from "@/pages/Signup";
+import ForgotPassword from "@/pages/ForgotPassword";
+import ResetPassword from "@/pages/ResetPassword";
+import Onboarding from "@/pages/Onboarding";
+
+// Protected pages
 import Dashboard from "@/pages/Dashboard";
 import Clients from "@/pages/Clients";
 import Employees from "@/pages/Employees";
@@ -13,12 +23,14 @@ import FixedExpenses from "@/pages/FixedExpenses";
 import Vendors from "@/pages/Vendors";
 import Contracts from "@/pages/Contracts";
 import FounderDashboard from "@/pages/FounderDashboard";
+import SettingsPage from "@/pages/SettingsPage";
+import TeamManagement from "@/pages/TeamManagement";
+import BillingPage from "@/pages/BillingPage";
 import {
   QuoteBuilder, SalaryDates, ExpenseReport, MonthlyBilling,
   TaxPortal, Projects, AssignTasks, EditorDashboard,
-  TeamDashboard, Settings,
+  TeamDashboard,
 } from "@/pages/PlaceholderPages";
-import Login from "@/pages/Login";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,9 +43,19 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <Routes>
+            {/* Public routes */}
+            <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+
+            {/* Onboarding (authenticated but no layout) */}
+            <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
+
+            {/* Protected app routes */}
             <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/clients" element={<Clients />} />
               <Route path="/employees" element={<Employees />} />
               <Route path="/fixed-expenses" element={<FixedExpenses />} />
@@ -49,8 +71,11 @@ const App = () => (
               <Route path="/assign-tasks" element={<AssignTasks />} />
               <Route path="/editor-dashboard" element={<EditorDashboard />} />
               <Route path="/team-dashboard" element={<TeamDashboard />} />
-              <Route path="/settings" element={<Settings />} />
+              <Route path="/team" element={<TeamManagement />} />
+              <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/billing" element={<BillingPage />} />
             </Route>
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

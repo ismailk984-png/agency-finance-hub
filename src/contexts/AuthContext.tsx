@@ -1,45 +1,156 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback, ReactNode } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { Session, User } from '@supabase/supabase-js';
 
-export type AppRole = 'super_admin' | 'hod' | 'campaign_manager' | 'editor' | 'designer';
+export type TenantRole = 'owner' | 'admin' | 'finance' | 'viewer';
+
+export interface Profile {
+  id: string;
+  tenant_id: string;
+  full_name: string;
+  email: string;
+  avatar_url: string | null;
+  active: boolean;
+  onboarding_completed: boolean;
+}
+
+export interface Tenant {
+  id: string;
+  company_name: string;
+  slug: string;
+  logo_url: string | null;
+  subscription_plan: string;
+  subscription_status: string;
+  trial_ends_at: string | null;
+  current_period_end: string | null;
+}
 
 interface AuthState {
-  isAuthenticated: boolean;
-  user: { email: string; name: string } | null;
-  roles: AppRole[];
-  signIn: (email: string, password: string) => Promise<boolean>;
-  signOut: () => void;
+  session: Session | null;
+  user: User | null;
+  profile: Profile | null;
+  tenant: Tenant | null;
+  roles: TenantRole[];
+  loading: boolean;
+  signUp: (email: string, password: string) => Promise<{ error: any }>;
+  signIn: (email: string, password: string) => Promise<{ error: any }>;
+  signOut: () => Promise<void>;
+  resetPassword: (email: string) => Promise<{ error: any }>;
+  refreshProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthState | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return localStorage.getItem('demo_auth') === 'true';
-  });
-  const [user, setUser] = useState<{ email: string; name: string } | null>(() => {
-    const saved = localStorage.getItem('demo_user');
-    return saved ? JSON.parse(saved) : null;
-  });
+  const [session, setSession] = useState<Session | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [tenant, setTenant] = useState<Tenant | null>(null);
+  const [roles, setRoles] = useState<TenantRole[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const signIn = async (email: string, _password: string): Promise<boolean> => {
-    // Demo auth — accepts any credentials
-    const u = { email, name: email.split('@')[0] };
-    setUser(u);
-    setIsAuthenticated(true);
-    localStorage.setItem('demo_auth', 'true');
-    localStorage.setItem('demo_user', JSON.stringify(u));
-    return true;
+  const fetchUserData = useCallback(async (userId: string) => {
+    try {
+      const { data: profileData } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .maybeSingle();
+
+      if (!profileData) {
+        setProfile(null);
+        setTenant(null);
+        setRoles([]);
+        return;
+      }
+
+      setProfile(profileData as unknown as Profile);
+
+      const { data: tenantData } = await supabase
+        .from('tenants')
+        .select('*')
+        .eq('id', (profileData as any).tenant_id)
+        .single();
+
+      if (tenantData) setTenant(tenantData as unknown as Tenant);
+
+      const { data: rolesData } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId);
+
+      setRoles((rolesData || []).map((r: any) => r.role as TenantRole));
+    } catch (err) {
+      console.error('Error fetching user data:', err);
+    }
+  }, []);
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (_event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+
+        if (session?.user) {
+          setTimeout(() => fetchUserData(session.user.id), 0);
+        } else {
+          setProfile(null);
+          setTenant(null);
+          setRoles([]);
+        }
+        setLoading(false);
+      }
+    );
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        fetchUserData(session.user.id);
+      }
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [fetchUserData]);
+
+  const signUp = async (email: string, password: string) => {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { emailRedirectTo: window.location.origin },
+    });
+    return { error };
   };
 
-  const signOut = () => {
-    setUser(null);
-    setIsAuthenticated(false);
-    localStorage.removeItem('demo_auth');
-    localStorage.removeItem('demo_user');
+  const signIn = async (email: string, password: string) => {
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    return { error };
+  };
+
+  const signOut = async () => {
+    await supabase.auth.signOut();
+    setProfile(null);
+    setTenant(null);
+    setRoles([]);
+  };
+
+  const resetPassword = async (email: string) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    return { error };
+  };
+
+  const refreshProfile = async () => {
+    if (user) await fetchUserData(user.id);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, roles: ['super_admin'], signIn, signOut }}>
+    <AuthContext.Provider value={{
+      session, user, profile, tenant, roles, loading,
+      signUp, signIn, signOut, resetPassword, refreshProfile,
+    }}>
       {children}
     </AuthContext.Provider>
   );

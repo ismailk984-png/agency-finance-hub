@@ -4,7 +4,7 @@ import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Separator } from '@/components/ui/separator';
 
 const pageTitles: Record<string, string> = {
-  '/': 'Dashboard',
+  '/dashboard': 'Dashboard',
   '/employees': 'Employees',
   '/clients': 'Monthly Retainer',
   '/settings': 'Settings',
@@ -20,6 +20,8 @@ const pageTitles: Record<string, string> = {
   '/assign-tasks': 'Assign Tasks',
   '/editor-dashboard': 'My Tasks',
   '/team-dashboard': 'Team Dashboard',
+  '/team': 'Team Management',
+  '/billing': 'Billing & Subscription',
 };
 
 export default function AppLayout() {

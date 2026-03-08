@@ -1,7 +1,7 @@
 import {
   LayoutDashboard, Briefcase, Settings, FileText, Zap, Landmark, Store,
   Crown, LogOut, BarChart3, Receipt, ScrollText, Users, CalendarDays,
-  ClipboardList, Monitor, ChevronsUpDown,
+  ClipboardList, Monitor, CreditCard, UserPlus,
 } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { NavLink } from '@/components/NavLink';
@@ -14,7 +14,7 @@ import {
 import { Button } from '@/components/ui/button';
 
 const navItems = [
-  { title: 'Dashboard', url: '/', icon: LayoutDashboard },
+  { title: 'Dashboard', url: '/dashboard', icon: LayoutDashboard },
   { title: 'Monthly Retainer', url: '/clients', icon: Briefcase },
   { title: 'Projects', url: '/projects', icon: FileText },
   { title: 'Employees', url: '/employees', icon: Users },
@@ -32,6 +32,8 @@ const navItems = [
 ];
 
 const systemNav = [
+  { title: 'Team', url: '/team', icon: UserPlus },
+  { title: 'Billing', url: '/billing', icon: CreditCard },
   { title: 'Settings', url: '/settings', icon: Settings },
 ];
 
@@ -40,10 +42,10 @@ export function AppSidebar() {
   const navigate = useNavigate();
   const { state } = useSidebar();
   const collapsed = state === 'collapsed';
-  const { signOut, user } = useAuthContext();
+  const { signOut, profile, tenant } = useAuthContext();
 
-  const handleSignOut = () => {
-    signOut();
+  const handleSignOut = async () => {
+    await signOut();
     navigate('/login');
   };
 
@@ -74,13 +76,18 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon" className="border-r">
       <SidebarHeader className="px-3 py-4">
-        <button className="flex items-center gap-2.5 w-full rounded-lg px-1.5 py-1 hover:bg-sidebar-accent transition-colors text-left">
+        <button
+          className="flex items-center gap-2.5 w-full rounded-lg px-1.5 py-1 hover:bg-sidebar-accent transition-colors text-left"
+          onClick={() => navigate('/dashboard')}
+        >
           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <Zap className="h-4 w-4" />
           </div>
           {!collapsed && (
             <div className="flex flex-col flex-1 min-w-0">
-              <span className="text-sm font-bold tracking-tight truncate">AgencyOS</span>
+              <span className="text-sm font-bold tracking-tight truncate">
+                {tenant?.company_name || 'AgencyOS'}
+              </span>
               <span className="text-[10px] text-sidebar-muted-foreground uppercase tracking-widest">Finance</span>
             </div>
           )}
@@ -91,7 +98,13 @@ export function AppSidebar() {
         {renderGroup('System', systemNav)}
       </SidebarContent>
       <SidebarFooter className="px-4 py-3">
-        {user && !collapsed && (
+        {profile && !collapsed && (
+          <div className="mb-2 px-1">
+            <p className="text-xs font-medium truncate">{profile.full_name}</p>
+            <p className="text-[10px] text-sidebar-muted-foreground truncate">{profile.email}</p>
+          </div>
+        )}
+        {!collapsed && (
           <Button variant="ghost" size="sm" className="w-full justify-start gap-2 text-muted-foreground" onClick={handleSignOut}>
             <LogOut className="h-4 w-4" />
             Sign Out
