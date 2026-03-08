@@ -59,6 +59,7 @@ function AdminRoutes() {
           <Route path="users" element={<AdminUsers />} />
           <Route path="tickets" element={<AdminTickets />} />
           <Route path="settings" element={<AdminSettings />} />
+          <Route path="addons" element={<AdminAddons />} />
         </Route>
       </Routes>
     </AdminAuthProvider>
