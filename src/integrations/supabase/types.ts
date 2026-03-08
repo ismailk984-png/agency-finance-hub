@@ -319,6 +319,59 @@ export type Database = {
           },
         ]
       }
+      support_tickets: {
+        Row: {
+          admin_response: string | null
+          category: string
+          created_at: string
+          created_by: string
+          description: string
+          id: string
+          priority: string
+          resolved_at: string | null
+          status: string
+          subject: string
+          tenant_id: string
+          updated_at: string
+        }
+        Insert: {
+          admin_response?: string | null
+          category?: string
+          created_at?: string
+          created_by: string
+          description: string
+          id?: string
+          priority?: string
+          resolved_at?: string | null
+          status?: string
+          subject: string
+          tenant_id: string
+          updated_at?: string
+        }
+        Update: {
+          admin_response?: string | null
+          category?: string
+          created_at?: string
+          created_by?: string
+          description?: string
+          id?: string
+          priority?: string
+          resolved_at?: string | null
+          status?: string
+          subject?: string
+          tenant_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_tickets_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       team_invitations: {
         Row: {
           accepted: boolean
@@ -564,6 +617,23 @@ export type Database = {
           trial_ends_at: string
         }[]
       }
+      admin_list_tickets: {
+        Args: never
+        Returns: {
+          admin_response: string
+          category: string
+          created_at: string
+          description: string
+          id: string
+          priority: string
+          reporter_email: string
+          reporter_name: string
+          resolved_at: string
+          status: string
+          subject: string
+          tenant_name: string
+        }[]
+      }
       admin_list_users: {
         Args: never
         Returns: {
@@ -575,6 +645,10 @@ export type Database = {
           role: string
           tenant_name: string
         }[]
+      }
+      admin_respond_ticket: {
+        Args: { _response: string; _status?: string; _ticket_id: string }
+        Returns: undefined
       }
       admin_suspend_tenant: { Args: { _tenant_id: string }; Returns: undefined }
       admin_update_tenant_plan: {
