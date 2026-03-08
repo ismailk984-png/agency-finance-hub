@@ -29,33 +29,33 @@ const testimonials = [
   { name: 'Ananya Desai', role: 'Co-Founder, Brandwave', quote: 'We tried 5 different tools before this. The team utilization view is genuinely incredible.', avatar: 'AD' },
 ];
 
-const productTabs = [
-  { key: 'dashboard', label: 'Dashboard', img: dashboardImg },
-  { key: 'clients', label: 'Clients', img: clientsImg },
-  { key: 'reports', label: 'Reporting', img: analyticsImg },
-];
-
 const stats = [
   { value: '500+', label: 'Agencies Onboarded' },
   { value: '₹12Cr+', label: 'Revenue Tracked' },
-  { value: '99.9%', label: 'Uptime' },
-  { value: '4.9/5', label: 'User Rating' },
+  { value: '42%', label: 'Avg. Margin Lift' },
+  { value: '99.9%', label: 'Uptime SLA' },
 ];
 
-const planKeys = ['starter', 'growth', 'pro'] as const;
+const productTabs = [
+  { key: 'dashboard', label: 'Dashboard', img: dashboardImg },
+  { key: 'clients', label: 'Clients', img: clientsImg },
+  { key: 'reporting', label: 'Reporting', img: analyticsImg },
+];
+
+const planKeys = Object.keys(PLAN_LIMITS) as (keyof typeof PLAN_LIMITS)[];
 
 export default function Landing() {
   const [activeTab, setActiveTab] = useState('dashboard');
-  const activeProduct = productTabs.find((t) => t.key === activeTab)!;
+  const activeProduct = productTabs.find((t) => t.key === activeTab) || productTabs[0];
 
   return (
-    <div className="min-h-screen bg-[hsl(0,0%,4%)] text-white antialiased overflow-x-hidden">
+    <div className="min-h-screen bg-background text-foreground antialiased overflow-x-hidden">
       <PublicNav />
 
       {/* ═══════════════ HERO ═══════════════ */}
       <section className="relative pt-36 pb-8 px-5">
         {/* Glow effect */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[radial-gradient(ellipse_at_center,hsl(48,96%,53%,0.12),transparent_70%)] pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[radial-gradient(ellipse_at_center,hsl(48,96%,53%,0.08),transparent_70%)] pointer-events-none" />
         
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -69,28 +69,28 @@ export default function Landing() {
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.15, duration: 0.4 }}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[hsl(0,0%,14%)] bg-[hsl(0,0%,7%)] text-[12px] text-[hsl(0,0%,55%)] mb-8"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border bg-muted text-[12px] text-muted-foreground mb-8"
             >
               <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
               AGENCY FINANCE OS
             </motion.div>
 
-            <h1 className="text-[clamp(2.8rem,6vw,4.5rem)] leading-[0.95] tracking-[-0.04em] font-normal text-white">
+            <h1 className="text-[clamp(2.8rem,6vw,4.5rem)] leading-[0.95] tracking-[-0.04em] font-normal text-foreground">
               Agency Owners
               <br />
               Are Builders,{' '}
-              <span className="text-[hsl(0,0%,40%)]">Not</span>
+              <span className="text-muted-foreground">Not</span>
               <br />
               <span className="text-primary">Accountants.</span>
             </h1>
 
-            <p className="mt-7 text-[17px] leading-[1.7] text-[hsl(0,0%,45%)] max-w-[440px]">
+            <p className="mt-7 text-[17px] leading-[1.7] text-muted-foreground max-w-[440px]">
               Let AgencyOS handle the financial complexity: margin tracking, team utilization, and profitability insights — so you stay focused on growing your agency.
             </p>
 
             <div className="flex items-center gap-3.5 mt-9">
               <Button
-                className="h-12 px-7 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 text-[15px] font-medium shadow-[0_0_30px_hsl(48,96%,53%,0.2)]"
+                className="h-12 px-7 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 text-[15px] font-medium shadow-[0_0_30px_hsl(48,96%,53%,0.15)]"
                 asChild
               >
                 <Link to="/signup">
@@ -100,7 +100,7 @@ export default function Landing() {
               </Button>
               <Button
                 variant="ghost"
-                className="h-12 px-5 rounded-full text-[15px] font-medium border border-[hsl(0,0%,14%)] text-white hover:bg-white/5"
+                className="h-12 px-5 rounded-full text-[15px] font-medium border border-border text-foreground hover:bg-muted"
                 asChild
               >
                 <a href="#video">
@@ -110,20 +110,20 @@ export default function Landing() {
               </Button>
             </div>
 
-            <p className="mt-6 text-[12px] text-[hsl(0,0%,35%)]">
+            <p className="mt-6 text-[12px] text-muted-foreground">
               Free 14-day trial · No credit card required
             </p>
           </div>
 
-          {/* Right - Product preview with glow */}
+          {/* Right - Product preview */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
             className="relative hidden lg:block"
           >
-            <div className="absolute -inset-8 bg-[radial-gradient(ellipse_at_center,hsl(48,96%,53%,0.08),transparent_70%)] pointer-events-none" />
-            <div className="relative rounded-2xl border border-[hsl(0,0%,14%)] overflow-hidden shadow-[0_20px_80px_-20px_hsl(48,96%,53%,0.15)]">
+            <div className="absolute -inset-8 bg-[radial-gradient(ellipse_at_center,hsl(48,96%,53%,0.06),transparent_70%)] pointer-events-none" />
+            <div className="relative rounded-2xl border border-border overflow-hidden shadow-[0_20px_80px_-20px_hsl(0,0%,0%,0.1)]">
               <img src={dashboardImg} alt="AgencyOS Dashboard" className="w-full" />
             </div>
             {/* Floating stats card */}
@@ -131,7 +131,7 @@ export default function Landing() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.5 }}
-              className="absolute -bottom-6 -left-6 bg-[hsl(0,0%,7%)] border border-[hsl(0,0%,14%)] rounded-xl p-4 shadow-2xl"
+              className="absolute -bottom-6 -left-6 bg-card border border-border rounded-xl p-4 shadow-2xl"
             >
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -139,7 +139,7 @@ export default function Landing() {
                 </div>
                 <div>
                   <p className="text-[20px] font-semibold text-primary">+42%</p>
-                  <p className="text-[11px] text-[hsl(0,0%,45%)]">Avg. Margin Increase</p>
+                  <p className="text-[11px] text-muted-foreground">Avg. Margin Increase</p>
                 </div>
               </div>
             </motion.div>
@@ -148,7 +148,7 @@ export default function Landing() {
       </section>
 
       {/* ═══════════════ STATS BAR ═══════════════ */}
-      <section className="py-16 px-5 border-t border-[hsl(0,0%,10%)]">
+      <section className="py-16 px-5 border-t border-border">
         <div className="mx-auto max-w-[1100px] grid grid-cols-2 md:grid-cols-4 gap-8">
           {stats.map((s, i) => (
             <motion.div
@@ -159,8 +159,8 @@ export default function Landing() {
               transition={{ duration: 0.4, delay: i * 0.1 }}
               className="text-center"
             >
-              <p className="text-[32px] font-semibold tracking-[-0.02em] text-white">{s.value}</p>
-              <p className="text-[13px] text-[hsl(0,0%,40%)] mt-1">{s.label}</p>
+              <p className="text-[32px] font-semibold tracking-[-0.02em] text-foreground">{s.value}</p>
+              <p className="text-[13px] text-muted-foreground mt-1">{s.label}</p>
             </motion.div>
           ))}
         </div>
@@ -177,29 +177,29 @@ export default function Landing() {
             className="text-center mb-10"
           >
             <span className="text-[12px] uppercase tracking-[0.15em] text-primary font-medium">ALL-IN-ONE SUITE</span>
-            <h2 className="mt-4 text-[clamp(2rem,5vw,3.2rem)] leading-[1.05] tracking-[-0.03em] text-white">
+            <h2 className="mt-4 text-[clamp(2rem,5vw,3.2rem)] leading-[1.05] tracking-[-0.03em] text-foreground">
               Stop Switching Between Tools.
             </h2>
-            <p className="text-[hsl(0,0%,45%)] mt-4 text-[16px] max-w-md mx-auto leading-relaxed">
+            <p className="text-muted-foreground mt-4 text-[16px] max-w-md mx-auto leading-relaxed">
               Everything from client management to profitability analytics. One unified platform.
             </p>
           </motion.div>
 
           {/* Tabs */}
           <div className="flex items-center justify-center mb-6">
-            <div className="inline-flex p-1 rounded-full bg-[hsl(0,0%,7%)] border border-[hsl(0,0%,14%)]">
+            <div className="inline-flex p-1 rounded-full bg-muted border border-border">
               {productTabs.map((tab) => (
                 <button
                   key={tab.key}
                   onClick={() => setActiveTab(tab.key)}
                   className={`relative px-6 py-2.5 text-[13px] font-medium rounded-full transition-all duration-200 ${
-                    activeTab === tab.key ? 'text-primary-foreground' : 'text-[hsl(0,0%,45%)] hover:text-white'
+                    activeTab === tab.key ? 'text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
                   {activeTab === tab.key && (
                     <motion.div
                       layoutId="active-dark-tab"
-                      className="absolute inset-0 bg-primary rounded-full shadow-[0_0_20px_hsl(48,96%,53%,0.2)]"
+                      className="absolute inset-0 bg-primary rounded-full shadow-[0_0_20px_hsl(48,96%,53%,0.15)]"
                       transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                     />
                   )}
@@ -211,7 +211,7 @@ export default function Landing() {
 
           {/* Screenshot */}
           <motion.div
-            className="relative rounded-2xl border border-[hsl(0,0%,14%)] overflow-hidden bg-[hsl(0,0%,7%)] shadow-[0_20px_80px_-20px_hsl(0,0%,0%,0.5)]"
+            className="relative rounded-2xl border border-border overflow-hidden bg-muted shadow-[0_20px_80px_-20px_hsl(0,0%,0%,0.08)]"
           >
             <AnimatePresence mode="wait">
               <motion.img
@@ -238,26 +238,26 @@ export default function Landing() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.5 }}
-            className="relative rounded-2xl overflow-hidden bg-[hsl(0,0%,7%)] border border-[hsl(0,0%,14%)] aspect-video cursor-pointer group"
+            className="relative rounded-2xl overflow-hidden bg-muted border border-border aspect-video cursor-pointer group"
           >
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(48,96%,53%,0.04),transparent_70%)]" />
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-5">
-              <div className="h-[80px] w-[80px] rounded-full bg-primary flex items-center justify-center shadow-[0_0_40px_hsl(48,96%,53%,0.3)] group-hover:scale-105 transition-transform duration-300">
+              <div className="h-[80px] w-[80px] rounded-full bg-primary flex items-center justify-center shadow-[0_0_40px_hsl(48,96%,53%,0.2)] group-hover:scale-105 transition-transform duration-300">
                 <Play className="h-8 w-8 text-primary-foreground fill-current ml-1" />
               </div>
-              <p className="text-[14px] text-[hsl(0,0%,45%)] font-medium">
+              <p className="text-[14px] text-muted-foreground font-medium">
                 Watch the 2-minute walkthrough
               </p>
             </div>
           </motion.div>
-          <p className="text-center text-[11px] text-[hsl(0,0%,25%)] mt-4">
+          <p className="text-center text-[11px] text-muted-foreground/60 mt-4">
             Replace with your recorded product demo
           </p>
         </div>
       </section>
 
       {/* ═══════════════ FEATURES ═══════════════ */}
-      <section id="features" className="py-24 px-5 border-t border-[hsl(0,0%,10%)]">
+      <section id="features" className="py-24 px-5 border-t border-border">
         <div className="mx-auto max-w-[1100px]">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -267,11 +267,11 @@ export default function Landing() {
             className="text-center mb-16"
           >
             <span className="text-[12px] uppercase tracking-[0.15em] text-primary font-medium">FUTURE OF AGENCIES</span>
-            <h2 className="mt-4 text-[clamp(2rem,5vw,3.2rem)] leading-[1.05] tracking-[-0.03em] text-white">
+            <h2 className="mt-4 text-[clamp(2rem,5vw,3.2rem)] leading-[1.05] tracking-[-0.03em] text-foreground">
               The OS built for agencies,
               <br />by agency founders.
             </h2>
-            <p className="text-[hsl(0,0%,45%)] mt-4 text-[16px] max-w-md mx-auto leading-relaxed">
+            <p className="text-muted-foreground mt-4 text-[16px] max-w-md mx-auto leading-relaxed">
               Simple. Smart. Purpose-built for creative and marketing agencies.
             </p>
           </motion.div>
@@ -284,15 +284,15 @@ export default function Landing() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.06 }}
-                className="rounded-2xl border border-[hsl(0,0%,10%)] bg-[hsl(0,0%,6%)] p-7 group hover:border-[hsl(0,0%,16%)] hover:bg-[hsl(0,0%,7%)] transition-all duration-300"
+                className="rounded-2xl border border-border bg-card p-7 group hover:border-primary/20 hover:shadow-md transition-all duration-300"
               >
-                <div className="h-11 w-11 rounded-xl bg-[hsl(0,0%,10%)] flex items-center justify-center mb-5 group-hover:bg-primary/10 transition-colors duration-300">
-                  <f.icon className="h-5 w-5 text-[hsl(0,0%,45%)] group-hover:text-primary transition-colors duration-300" />
+                <div className="h-11 w-11 rounded-xl bg-muted flex items-center justify-center mb-5 group-hover:bg-primary/10 transition-colors duration-300">
+                  <f.icon className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors duration-300" />
                 </div>
-                <h3 className="text-[16px] font-semibold mb-2.5 tracking-[-0.01em] text-white">
+                <h3 className="text-[16px] font-semibold mb-2.5 tracking-[-0.01em] text-foreground">
                   {f.title}
                 </h3>
-                <p className="text-[14px] text-[hsl(0,0%,40%)] leading-[1.7]">{f.desc}</p>
+                <p className="text-[14px] text-muted-foreground leading-[1.7]">{f.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -300,7 +300,7 @@ export default function Landing() {
       </section>
 
       {/* ═══════════════ TESTIMONIALS ═══════════════ */}
-      <section id="customers" className="py-24 px-5 border-t border-[hsl(0,0%,10%)]">
+      <section id="customers" className="py-24 px-5 border-t border-border">
         <div className="mx-auto max-w-[1100px]">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -310,7 +310,7 @@ export default function Landing() {
             className="text-center mb-6"
           >
             <p className="text-[14px] text-primary font-medium mb-4">★★★★★</p>
-            <h2 className="text-[clamp(1.5rem,4vw,2.2rem)] leading-[1.2] tracking-[-0.02em] text-white max-w-lg mx-auto">
+            <h2 className="text-[clamp(1.5rem,4vw,2.2rem)] leading-[1.2] tracking-[-0.02em] text-foreground max-w-lg mx-auto">
               500+ agencies trust AgencyOS for their financial operations.
             </h2>
           </motion.div>
@@ -323,23 +323,23 @@ export default function Landing() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="rounded-2xl border border-[hsl(0,0%,10%)] bg-[hsl(0,0%,6%)] p-7 hover:border-[hsl(0,0%,16%)] transition-all duration-300"
+                className="rounded-2xl border border-border bg-card p-7 hover:shadow-md transition-all duration-300"
               >
                 <div className="flex gap-0.5 mb-5">
                   {[...Array(5)].map((_, j) => (
                     <Star key={j} className="h-4 w-4 fill-primary text-primary" />
                   ))}
                 </div>
-                <p className="text-[14px] text-[hsl(0,0%,70%)] leading-[1.7] mb-7">
+                <p className="text-[14px] text-muted-foreground leading-[1.7] mb-7">
                   "{t.quote}"
                 </p>
-                <div className="flex items-center gap-3 pt-5 border-t border-[hsl(0,0%,10%)]">
-                  <div className="h-10 w-10 rounded-full bg-[hsl(0,0%,10%)] flex items-center justify-center text-[12px] font-semibold text-[hsl(0,0%,55%)]">
+                <div className="flex items-center gap-3 pt-5 border-t border-border">
+                  <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center text-[12px] font-semibold text-muted-foreground">
                     {t.avatar}
                   </div>
                   <div>
-                    <p className="text-[13px] font-semibold text-white">{t.name}</p>
-                    <p className="text-[11px] text-[hsl(0,0%,40%)]">{t.role}</p>
+                    <p className="text-[13px] font-semibold text-foreground">{t.name}</p>
+                    <p className="text-[11px] text-muted-foreground">{t.role}</p>
                   </div>
                 </div>
               </motion.div>
@@ -349,7 +349,7 @@ export default function Landing() {
       </section>
 
       {/* ═══════════════ PRICING ═══════════════ */}
-      <section id="pricing" className="py-24 px-5 border-t border-[hsl(0,0%,10%)]">
+      <section id="pricing" className="py-24 px-5 border-t border-border">
         <div className="mx-auto max-w-[960px]">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -359,10 +359,10 @@ export default function Landing() {
             className="text-center mb-14"
           >
             <span className="text-[12px] uppercase tracking-[0.15em] text-primary font-medium">PLANS</span>
-            <h2 className="mt-4 text-[clamp(2rem,5vw,3.2rem)] leading-[1.05] tracking-[-0.03em] text-white">
+            <h2 className="mt-4 text-[clamp(2rem,5vw,3.2rem)] leading-[1.05] tracking-[-0.03em] text-foreground">
               Simple, transparent pricing.
             </h2>
-            <p className="text-[hsl(0,0%,45%)] mt-4 text-[16px]">
+            <p className="text-muted-foreground mt-4 text-[16px]">
               Start free, scale as your agency grows.
             </p>
           </motion.div>
@@ -381,8 +381,8 @@ export default function Landing() {
                 >
                   <div className={`rounded-2xl border p-7 h-full flex flex-col transition-all duration-300 ${
                     popular
-                      ? 'border-primary bg-primary text-primary-foreground shadow-[0_0_60px_-15px_hsl(48,96%,53%,0.25)]'
-                      : 'border-[hsl(0,0%,10%)] bg-[hsl(0,0%,6%)] hover:border-[hsl(0,0%,16%)]'
+                      ? 'border-primary bg-primary text-primary-foreground shadow-[0_0_60px_-15px_hsl(48,96%,53%,0.2)]'
+                      : 'border-border bg-card hover:shadow-md'
                   }`}>
                     <div className="mb-5">
                       <div className="flex items-center gap-2 mb-2">
@@ -393,14 +393,14 @@ export default function Landing() {
                           </span>
                         )}
                       </div>
-                      <p className={`text-[13px] leading-relaxed ${popular ? 'text-primary-foreground/60' : 'text-[hsl(0,0%,40%)]'}`}>
+                      <p className={`text-[13px] leading-relaxed ${popular ? 'text-primary-foreground/60' : 'text-muted-foreground'}`}>
                         {plan.description}
                       </p>
                     </div>
 
                     <div className="mb-7">
                       <span className="text-[40px] font-semibold tracking-[-0.03em]">{fmt(plan.price)}</span>
-                      <span className={`text-[14px] ${popular ? 'text-primary-foreground/50' : 'text-[hsl(0,0%,35%)]'}`}>/mo</span>
+                      <span className={`text-[14px] ${popular ? 'text-primary-foreground/50' : 'text-muted-foreground'}`}>/mo</span>
                     </div>
 
                     <div className="space-y-3.5 flex-1 mb-8">
@@ -437,8 +437,8 @@ export default function Landing() {
       </section>
 
       {/* ═══════════════ CTA ═══════════════ */}
-      <section className="py-28 px-5 border-t border-[hsl(0,0%,10%)] relative">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(48,96%,53%,0.06),transparent_60%)] pointer-events-none" />
+      <section className="py-28 px-5 border-t border-border relative">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(48,96%,53%,0.04),transparent_60%)] pointer-events-none" />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -446,15 +446,15 @@ export default function Landing() {
           transition={{ duration: 0.5 }}
           className="relative z-10 mx-auto max-w-[560px] text-center"
         >
-          <h2 className="text-[clamp(2rem,5vw,3.2rem)] leading-[1.05] tracking-[-0.03em] text-white">
+          <h2 className="text-[clamp(2rem,5vw,3.2rem)] leading-[1.05] tracking-[-0.03em] text-foreground">
             Ready to take control of your agency finances?
           </h2>
-          <p className="text-[hsl(0,0%,45%)] mt-5 text-[16px] leading-relaxed">
+          <p className="text-muted-foreground mt-5 text-[16px] leading-relaxed">
             Join 500+ agencies making smarter financial decisions every day.
           </p>
           <div className="mt-9">
             <Button
-              className="h-13 px-8 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 text-[15px] font-medium shadow-[0_0_40px_hsl(48,96%,53%,0.25)]"
+              className="h-13 px-8 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 text-[15px] font-medium shadow-[0_0_40px_hsl(48,96%,53%,0.15)]"
               asChild
             >
               <Link to="/signup">
@@ -463,33 +463,33 @@ export default function Landing() {
               </Link>
             </Button>
           </div>
-          <p className="mt-6 text-[12px] text-[hsl(0,0%,30%)]">
+          <p className="mt-6 text-[12px] text-muted-foreground">
             No credit card required
           </p>
         </motion.div>
       </section>
 
       {/* ═══════════════ FOOTER ═══════════════ */}
-      <footer className="border-t border-[hsl(0,0%,10%)] py-10 px-5">
+      <footer className="border-t border-border py-10 px-5">
         <div className="mx-auto max-w-[1100px] flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
             <div className="h-6 w-6 rounded-lg bg-primary flex items-center justify-center">
               <Zap className="h-3.5 w-3.5 text-primary-foreground" />
             </div>
-            <span className="text-[14px] font-semibold text-white">AgencyOS</span>
+            <span className="text-[14px] font-semibold text-foreground">AgencyOS</span>
           </div>
           <div className="flex items-center gap-8">
             {['Features', 'Pricing', 'Customers'].map((item) => (
               <a
                 key={item}
                 href={`/#${item.toLowerCase()}`}
-                className="text-[13px] text-[hsl(0,0%,40%)] hover:text-white transition-colors"
+                className="text-[13px] text-muted-foreground hover:text-foreground transition-colors"
               >
                 {item}
               </a>
             ))}
           </div>
-          <p className="text-[12px] text-[hsl(0,0%,25%)]">© 2026 AgencyOS. All rights reserved.</p>
+          <p className="text-[12px] text-muted-foreground/60">© 2026 AgencyOS. All rights reserved.</p>
         </div>
       </footer>
     </div>
