@@ -55,6 +55,7 @@ function AdminRoutes() {
           <Route index element={<AdminDashboard />} />
           <Route path="tenants" element={<AdminTenants />} />
           <Route path="users" element={<AdminUsers />} />
+          <Route path="tickets" element={<AdminTickets />} />
           <Route path="settings" element={<AdminSettings />} />
         </Route>
       </Routes>
