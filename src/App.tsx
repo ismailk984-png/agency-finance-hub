@@ -22,6 +22,7 @@ import AdminLogin from "@/pages/admin/AdminLogin";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import AdminTenants from "@/pages/admin/AdminTenants";
 import AdminUsers from "@/pages/admin/AdminUsers";
+import AdminTickets from "@/pages/admin/AdminTickets";
 import AdminSettings from "@/pages/admin/AdminSettings";
 
 // Protected pages
