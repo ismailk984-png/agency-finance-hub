@@ -2,13 +2,14 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import { Button } from '@/components/ui/button';
 import {
-  LayoutDashboard, Building2, Users, Settings, LogOut, Shield, ArrowLeft,
+  LayoutDashboard, Building2, Users, Settings, LogOut, Shield, ArrowLeft, LifeBuoy,
 } from 'lucide-react';
 
 const adminNav = [
   { title: 'Dashboard', url: '/admin', icon: LayoutDashboard },
   { title: 'Tenants', url: '/admin/tenants', icon: Building2 },
   { title: 'Users', url: '/admin/users', icon: Users },
+  { title: 'Tickets', url: '/admin/tickets', icon: LifeBuoy },
   { title: 'Settings', url: '/admin/settings', icon: Settings },
 ];
 

@@ -1,7 +1,7 @@
 import {
   LayoutDashboard, Briefcase, Settings, FileText, Zap, Landmark, Store,
   Crown, LogOut, BarChart3, Receipt, ScrollText, Users, CalendarDays,
-  ClipboardList, Monitor, CreditCard, UserPlus,
+  ClipboardList, Monitor, CreditCard, UserPlus, LifeBuoy,
 } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { NavLink } from '@/components/NavLink';
@@ -33,6 +33,7 @@ const navItems = [
 
 const systemNav = [
   { title: 'Team', url: '/team', icon: UserPlus },
+  { title: 'Support', url: '/support', icon: LifeBuoy },
   { title: 'Billing', url: '/billing', icon: CreditCard },
   { title: 'Settings', url: '/settings', icon: Settings },
 ];
