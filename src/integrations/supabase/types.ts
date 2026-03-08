@@ -257,6 +257,24 @@ export type Database = {
           },
         ]
       }
+      platform_admins: {
+        Row: {
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           active: boolean
@@ -527,6 +545,45 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_activate_tenant: {
+        Args: { _tenant_id: string }
+        Returns: undefined
+      }
+      admin_get_stats: { Args: never; Returns: Json }
+      admin_list_tenants: {
+        Args: never
+        Returns: {
+          company_name: string
+          created_at: string
+          id: string
+          member_count: number
+          owner_email: string
+          slug: string
+          subscription_plan: string
+          subscription_status: string
+          trial_ends_at: string
+        }[]
+      }
+      admin_list_users: {
+        Args: never
+        Returns: {
+          active: boolean
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          role: string
+          tenant_name: string
+        }[]
+      }
+      admin_suspend_tenant: { Args: { _tenant_id: string }; Returns: undefined }
+      admin_update_tenant_plan: {
+        Args: {
+          _plan: Database["public"]["Enums"]["subscription_plan"]
+          _tenant_id: string
+        }
+        Returns: undefined
+      }
       check_pending_invitation: { Args: never; Returns: Json }
       complete_onboarding: {
         Args: {
@@ -553,6 +610,7 @@ export type Database = {
         }
         Returns: string
       }
+      is_platform_admin: { Args: { _user_id: string }; Returns: boolean }
       is_tenant_admin: { Args: { _user_id: string }; Returns: boolean }
       join_tenant_by_invitation: {
         Args: { _full_name: string }
