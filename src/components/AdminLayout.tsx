@@ -9,6 +9,7 @@ const adminNav = [
   { title: 'Dashboard', url: '/admin', icon: LayoutDashboard },
   { title: 'Tenants', url: '/admin/tenants', icon: Building2 },
   { title: 'Users', url: '/admin/users', icon: Users },
+  { title: 'Tickets', url: '/admin/tickets', icon: LifeBuoy },
   { title: 'Settings', url: '/admin/settings', icon: Settings },
 ];
 

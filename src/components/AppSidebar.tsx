@@ -33,6 +33,7 @@ const navItems = [
 
 const systemNav = [
   { title: 'Team', url: '/team', icon: UserPlus },
+  { title: 'Support', url: '/support', icon: LifeBuoy },
   { title: 'Billing', url: '/billing', icon: CreditCard },
   { title: 'Settings', url: '/settings', icon: Settings },
 ];
