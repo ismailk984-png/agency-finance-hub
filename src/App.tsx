@@ -101,6 +101,7 @@ function CustomerRoutes() {
           <Route path="/team" element={<TeamManagement />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/support" element={<SupportTickets />} />
+          <Route path="/addons" element={<AddonsMarketplace />} />
           <Route path="/billing" element={<BillingPage />} />
         </Route>
 
