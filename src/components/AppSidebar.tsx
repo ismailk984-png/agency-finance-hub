@@ -1,7 +1,7 @@
 import {
   LayoutDashboard, Briefcase, Settings, FileText, Zap, Landmark, Store,
   Crown, LogOut, BarChart3, Receipt, ScrollText, Users, CalendarDays,
-  ClipboardList, Monitor, CreditCard, UserPlus,
+  ClipboardList, Monitor, CreditCard, UserPlus, LifeBuoy,
 } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { NavLink } from '@/components/NavLink';
