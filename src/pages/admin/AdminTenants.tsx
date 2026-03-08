@@ -46,7 +46,7 @@ export default function AdminTenants() {
   const handlePlanChange = async (id: string, plan: string) => {
     const { error } = await supabase.rpc('admin_update_tenant_plan', {
       _tenant_id: id,
-      _plan: plan,
+      _plan: plan as any,
     });
     if (error) toast.error(error.message);
     else { toast.success('Plan updated'); load(); }
