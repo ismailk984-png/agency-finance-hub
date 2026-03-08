@@ -2,7 +2,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import { Button } from '@/components/ui/button';
 import {
-  LayoutDashboard, Building2, Users, Settings, LogOut, Shield, ArrowLeft, LifeBuoy,
+  LayoutDashboard, Building2, Users, Settings, LogOut, Shield, ArrowLeft, LifeBuoy, Puzzle,
 } from 'lucide-react';
 
 const adminNav = [
@@ -10,6 +10,7 @@ const adminNav = [
   { title: 'Tenants', url: '/admin/tenants', icon: Building2 },
   { title: 'Users', url: '/admin/users', icon: Users },
   { title: 'Tickets', url: '/admin/tickets', icon: LifeBuoy },
+  { title: 'Add-ons', url: '/admin/addons', icon: Puzzle },
   { title: 'Settings', url: '/admin/settings', icon: Settings },
 ];
 

@@ -24,6 +24,7 @@ import AdminTenants from "@/pages/admin/AdminTenants";
 import AdminUsers from "@/pages/admin/AdminUsers";
 import AdminTickets from "@/pages/admin/AdminTickets";
 import AdminSettings from "@/pages/admin/AdminSettings";
+import AdminAddons from "@/pages/admin/AdminAddons";
 
 // Protected pages
 import Dashboard from "@/pages/Dashboard";
@@ -37,6 +38,7 @@ import SettingsPage from "@/pages/SettingsPage";
 import TeamManagement from "@/pages/TeamManagement";
 import BillingPage from "@/pages/BillingPage";
 import SupportTickets from "@/pages/SupportTickets";
+import AddonsMarketplace from "@/pages/AddonsMarketplace";
 import {
   QuoteBuilder, SalaryDates, ExpenseReport, MonthlyBilling,
   TaxPortal, Projects, AssignTasks, EditorDashboard,
@@ -57,6 +59,7 @@ function AdminRoutes() {
           <Route path="users" element={<AdminUsers />} />
           <Route path="tickets" element={<AdminTickets />} />
           <Route path="settings" element={<AdminSettings />} />
+          <Route path="addons" element={<AdminAddons />} />
         </Route>
       </Routes>
     </AdminAuthProvider>
@@ -98,6 +101,7 @@ function CustomerRoutes() {
           <Route path="/team" element={<TeamManagement />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/support" element={<SupportTickets />} />
+          <Route path="/addons" element={<AddonsMarketplace />} />
           <Route path="/billing" element={<BillingPage />} />
         </Route>
 
