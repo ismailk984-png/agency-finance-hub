@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      addon_features: {
+        Row: {
+          active: boolean
+          billing_type: string
+          category: string
+          created_at: string
+          description: string
+          id: string
+          name: string
+          price: number
+          slug: string
+        }
+        Insert: {
+          active?: boolean
+          billing_type?: string
+          category?: string
+          created_at?: string
+          description?: string
+          id?: string
+          name: string
+          price?: number
+          slug: string
+        }
+        Update: {
+          active?: boolean
+          billing_type?: string
+          category?: string
+          created_at?: string
+          description?: string
+          id?: string
+          name?: string
+          price?: number
+          slug?: string
+        }
+        Relationships: []
+      }
       clients: {
         Row: {
           active: boolean
@@ -410,6 +446,54 @@ export type Database = {
           },
         ]
       }
+      tenant_addons: {
+        Row: {
+          activated_at: string
+          activated_by: string
+          active: boolean
+          addon_id: string
+          expires_at: string | null
+          id: string
+          stripe_payment_id: string | null
+          tenant_id: string
+        }
+        Insert: {
+          activated_at?: string
+          activated_by?: string
+          active?: boolean
+          addon_id: string
+          expires_at?: string | null
+          id?: string
+          stripe_payment_id?: string | null
+          tenant_id: string
+        }
+        Update: {
+          activated_at?: string
+          activated_by?: string
+          active?: boolean
+          addon_id?: string
+          expires_at?: string | null
+          id?: string
+          stripe_payment_id?: string | null
+          tenant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tenant_addons_addon_id_fkey"
+            columns: ["addon_id"]
+            isOneToOne: false
+            referencedRelation: "addon_features"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tenant_addons_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tenant_settings: {
         Row: {
           ads_accounts_capacity_per_ads_person: number
@@ -598,11 +682,44 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_activate_addon: {
+        Args: { _activated_by?: string; _addon_id: string; _tenant_id: string }
+        Returns: undefined
+      }
       admin_activate_tenant: {
         Args: { _tenant_id: string }
         Returns: undefined
       }
+      admin_create_addon: {
+        Args: {
+          _billing_type: string
+          _category: string
+          _description: string
+          _name: string
+          _price: number
+          _slug: string
+        }
+        Returns: string
+      }
+      admin_deactivate_addon: {
+        Args: { _addon_id: string; _tenant_id: string }
+        Returns: undefined
+      }
       admin_get_stats: { Args: never; Returns: Json }
+      admin_list_addons: {
+        Args: never
+        Returns: {
+          activation_count: number
+          active: boolean
+          billing_type: string
+          category: string
+          description: string
+          id: string
+          name: string
+          price: number
+          slug: string
+        }[]
+      }
       admin_list_tenants: {
         Args: never
         Returns: {
@@ -651,6 +768,17 @@ export type Database = {
         Returns: undefined
       }
       admin_suspend_tenant: { Args: { _tenant_id: string }; Returns: undefined }
+      admin_tenant_addons: {
+        Args: { _tenant_id: string }
+        Returns: {
+          activated_at: string
+          activated_by: string
+          addon_id: string
+          addon_name: string
+          addon_slug: string
+          is_active: boolean
+        }[]
+      }
       admin_update_tenant_plan: {
         Args: {
           _plan: Database["public"]["Enums"]["subscription_plan"]
@@ -694,6 +822,10 @@ export type Database = {
       setup_new_tenant: {
         Args: { _company_name: string; _full_name: string }
         Returns: string
+      }
+      tenant_has_addon: {
+        Args: { _addon_slug: string; _tenant_id: string }
+        Returns: boolean
       }
       update_member_role: {
         Args: {
