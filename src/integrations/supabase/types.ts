@@ -14,16 +14,572 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      clients: {
+        Row: {
+          active: boolean
+          ads_required: boolean
+          assigned_campaign_manager: string | null
+          client_name: string
+          comments: string | null
+          created_at: string
+          created_by: string | null
+          current_retainer: number
+          gmb_required: boolean
+          gst_rate: number
+          id: string
+          orm_required: boolean
+          plan_type: string
+          reels_per_month: number
+          shoot_days_per_month: number
+          shoot_frequency: string
+          smm_required: boolean
+          statics_per_month: number
+          stories_per_month: number
+          tds_rate: number
+          tenant_id: string
+          travel_type: string
+          updated_at: string
+          vendor_budget: number
+        }
+        Insert: {
+          active?: boolean
+          ads_required?: boolean
+          assigned_campaign_manager?: string | null
+          client_name: string
+          comments?: string | null
+          created_at?: string
+          created_by?: string | null
+          current_retainer?: number
+          gmb_required?: boolean
+          gst_rate?: number
+          id?: string
+          orm_required?: boolean
+          plan_type?: string
+          reels_per_month?: number
+          shoot_days_per_month?: number
+          shoot_frequency?: string
+          smm_required?: boolean
+          statics_per_month?: number
+          stories_per_month?: number
+          tds_rate?: number
+          tenant_id: string
+          travel_type?: string
+          updated_at?: string
+          vendor_budget?: number
+        }
+        Update: {
+          active?: boolean
+          ads_required?: boolean
+          assigned_campaign_manager?: string | null
+          client_name?: string
+          comments?: string | null
+          created_at?: string
+          created_by?: string | null
+          current_retainer?: number
+          gmb_required?: boolean
+          gst_rate?: number
+          id?: string
+          orm_required?: boolean
+          plan_type?: string
+          reels_per_month?: number
+          shoot_days_per_month?: number
+          shoot_frequency?: string
+          smm_required?: boolean
+          statics_per_month?: number
+          stories_per_month?: number
+          tds_rate?: number
+          tenant_id?: string
+          travel_type?: string
+          updated_at?: string
+          vendor_budget?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clients_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      contracts: {
+        Row: {
+          client_id: string | null
+          client_name: string
+          created_at: string
+          created_by: string | null
+          end_date: string | null
+          id: string
+          start_date: string
+          status: string
+          tenant_id: string
+          updated_at: string
+          value: number
+        }
+        Insert: {
+          client_id?: string | null
+          client_name: string
+          created_at?: string
+          created_by?: string | null
+          end_date?: string | null
+          id?: string
+          start_date: string
+          status?: string
+          tenant_id: string
+          updated_at?: string
+          value?: number
+        }
+        Update: {
+          client_id?: string | null
+          client_name?: string
+          created_at?: string
+          created_by?: string | null
+          end_date?: string | null
+          id?: string
+          start_date?: string
+          status?: string
+          tenant_id?: string
+          updated_at?: string
+          value?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contracts_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contracts_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      employees: {
+        Row: {
+          active: boolean
+          created_at: string
+          created_by: string | null
+          email: string | null
+          employee_name: string
+          id: string
+          joining_date: string | null
+          monthly_salary: number
+          overhead_multiplier_percent: number
+          role_category: string
+          salary_day: number | null
+          tenant_id: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          created_by?: string | null
+          email?: string | null
+          employee_name: string
+          id?: string
+          joining_date?: string | null
+          monthly_salary?: number
+          overhead_multiplier_percent?: number
+          role_category?: string
+          salary_day?: number | null
+          tenant_id: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          created_by?: string | null
+          email?: string | null
+          employee_name?: string
+          id?: string
+          joining_date?: string | null
+          monthly_salary?: number
+          overhead_multiplier_percent?: number
+          role_category?: string
+          salary_day?: number | null
+          tenant_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employees_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fixed_expenses: {
+        Row: {
+          amount: number
+          category: string
+          created_at: string
+          created_by: string | null
+          id: string
+          name: string
+          tenant_id: string
+          updated_at: string
+        }
+        Insert: {
+          amount?: number
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          name: string
+          tenant_id: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          name?: string
+          tenant_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fixed_expenses_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          active: boolean
+          avatar_url: string | null
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          onboarding_completed: boolean
+          tenant_id: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          avatar_url?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string
+          id: string
+          onboarding_completed?: boolean
+          tenant_id: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          avatar_url?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          onboarding_completed?: boolean
+          tenant_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      team_invitations: {
+        Row: {
+          accepted: boolean
+          created_at: string
+          email: string
+          id: string
+          invited_by: string | null
+          role: Database["public"]["Enums"]["tenant_role"]
+          tenant_id: string
+        }
+        Insert: {
+          accepted?: boolean
+          created_at?: string
+          email: string
+          id?: string
+          invited_by?: string | null
+          role?: Database["public"]["Enums"]["tenant_role"]
+          tenant_id: string
+        }
+        Update: {
+          accepted?: boolean
+          created_at?: string
+          email?: string
+          id?: string
+          invited_by?: string | null
+          role?: Database["public"]["Enums"]["tenant_role"]
+          tenant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_invitations_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tenant_settings: {
+        Row: {
+          ads_accounts_capacity_per_ads_person: number
+          business_type: string
+          created_at: string
+          currency: string
+          currency_symbol: string
+          id: string
+          reels_per_editor_per_month: number
+          shoot_day_internal_cost: number
+          statics_per_designer_per_month: number
+          stories_factor_percent: number
+          target_margin_percent: number
+          tax_mode: string
+          tenant_id: string
+          updated_at: string
+          videographer_shoots_per_month: number
+        }
+        Insert: {
+          ads_accounts_capacity_per_ads_person?: number
+          business_type?: string
+          created_at?: string
+          currency?: string
+          currency_symbol?: string
+          id?: string
+          reels_per_editor_per_month?: number
+          shoot_day_internal_cost?: number
+          statics_per_designer_per_month?: number
+          stories_factor_percent?: number
+          target_margin_percent?: number
+          tax_mode?: string
+          tenant_id: string
+          updated_at?: string
+          videographer_shoots_per_month?: number
+        }
+        Update: {
+          ads_accounts_capacity_per_ads_person?: number
+          business_type?: string
+          created_at?: string
+          currency?: string
+          currency_symbol?: string
+          id?: string
+          reels_per_editor_per_month?: number
+          shoot_day_internal_cost?: number
+          statics_per_designer_per_month?: number
+          stories_factor_percent?: number
+          target_margin_percent?: number
+          tax_mode?: string
+          tenant_id?: string
+          updated_at?: string
+          videographer_shoots_per_month?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tenant_settings_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: true
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tenants: {
+        Row: {
+          company_name: string
+          created_at: string
+          current_period_end: string | null
+          id: string
+          logo_url: string | null
+          owner_user_id: string | null
+          slug: string
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          subscription_plan: Database["public"]["Enums"]["subscription_plan"]
+          subscription_status: Database["public"]["Enums"]["subscription_status"]
+          trial_ends_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          company_name: string
+          created_at?: string
+          current_period_end?: string | null
+          id?: string
+          logo_url?: string | null
+          owner_user_id?: string | null
+          slug: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          subscription_plan?: Database["public"]["Enums"]["subscription_plan"]
+          subscription_status?: Database["public"]["Enums"]["subscription_status"]
+          trial_ends_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          company_name?: string
+          created_at?: string
+          current_period_end?: string | null
+          id?: string
+          logo_url?: string | null
+          owner_user_id?: string | null
+          slug?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          subscription_plan?: Database["public"]["Enums"]["subscription_plan"]
+          subscription_status?: Database["public"]["Enums"]["subscription_status"]
+          trial_ends_at?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["tenant_role"]
+          tenant_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role?: Database["public"]["Enums"]["tenant_role"]
+          tenant_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["tenant_role"]
+          tenant_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_roles_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vendors: {
+        Row: {
+          active: boolean
+          created_at: string
+          created_by: string | null
+          id: string
+          monthly_cost: number
+          name: string
+          service: string
+          tenant_id: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          monthly_cost?: number
+          name: string
+          service?: string
+          tenant_id: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          monthly_cost?: number
+          name?: string
+          service?: string
+          tenant_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vendors_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      check_pending_invitation: { Args: never; Returns: Json }
+      complete_onboarding: {
+        Args: {
+          _business_type?: string
+          _currency?: string
+          _currency_symbol?: string
+          _target_margin?: number
+          _tax_mode?: string
+        }
+        Returns: undefined
+      }
+      get_user_tenant_id: { Args: { _user_id: string }; Returns: string }
+      has_tenant_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["tenant_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      invite_team_member: {
+        Args: {
+          _email: string
+          _role?: Database["public"]["Enums"]["tenant_role"]
+        }
+        Returns: string
+      }
+      is_tenant_admin: { Args: { _user_id: string }; Returns: boolean }
+      join_tenant_by_invitation: {
+        Args: { _full_name: string }
+        Returns: string
+      }
+      remove_team_member: { Args: { _user_id: string }; Returns: undefined }
+      setup_new_tenant: {
+        Args: { _company_name: string; _full_name: string }
+        Returns: string
+      }
+      update_member_role: {
+        Args: {
+          _new_role: Database["public"]["Enums"]["tenant_role"]
+          _user_id: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
-      [_ in never]: never
+      subscription_plan: "starter" | "growth" | "pro"
+      subscription_status:
+        | "trialing"
+        | "active"
+        | "past_due"
+        | "canceled"
+        | "inactive"
+      tenant_role: "owner" | "admin" | "finance" | "viewer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +706,16 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      subscription_plan: ["starter", "growth", "pro"],
+      subscription_status: [
+        "trialing",
+        "active",
+        "past_due",
+        "canceled",
+        "inactive",
+      ],
+      tenant_role: ["owner", "admin", "finance", "viewer"],
+    },
   },
 } as const

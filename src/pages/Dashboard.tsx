@@ -1,3 +1,4 @@
+import { useAuthContext } from '@/contexts/AuthContext';
 import {
   demoClients, demoEmployees, demoSettings, demoFixedExpenses, demoContracts,
   derivePools, calcClientMargin, fmt, fmtPct,
@@ -12,6 +13,7 @@ import {
 } from 'lucide-react';
 
 export default function Dashboard() {
+  const { tenant } = useAuthContext();
   const clients = demoClients;
   const employees = demoEmployees;
   const settings = demoSettings;
@@ -61,7 +63,6 @@ export default function Dashboard() {
 
   const overallMargin = totalRevenue > 0 ? ((totalRevenue - totalSalaryPools) / totalRevenue) * 100 : 0;
 
-  // Fixed expense categories
   const categoryTotals = {
     office: demoFixedExpenses.filter(e => e.category === 'office_infrastructure').reduce((s, e) => s + e.amount, 0),
     software: demoFixedExpenses.filter(e => e.category === 'software_tools').reduce((s, e) => s + e.amount, 0),
@@ -90,7 +91,7 @@ export default function Dashboard() {
     <TooltipProvider delayDuration={200}>
       <div className="space-y-6">
         <div className="page-header">
-          <h1 className="page-title">Dashboard</h1>
+          <h1 className="page-title">Welcome, {tenant?.company_name || 'Your Agency'}</h1>
           <p className="page-description">Agency performance overview — all metrics auto-update from employee & client data.</p>
         </div>
 
