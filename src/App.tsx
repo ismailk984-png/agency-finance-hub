@@ -24,6 +24,7 @@ import AdminTenants from "@/pages/admin/AdminTenants";
 import AdminUsers from "@/pages/admin/AdminUsers";
 import AdminTickets from "@/pages/admin/AdminTickets";
 import AdminSettings from "@/pages/admin/AdminSettings";
+import AdminAddons from "@/pages/admin/AdminAddons";
 
 // Protected pages
 import Dashboard from "@/pages/Dashboard";
